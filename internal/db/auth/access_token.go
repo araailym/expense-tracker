@@ -14,7 +14,7 @@ func (m *Auth) AccessToken(ctx context.Context, inp *AccessTokenInput) (*ModelUs
 	log := m.logger.With("method", "AccessToken")
 
 	stmt := `
-SELECT id, email
+SELECT id, email, role
 FROM user_
 WHERE id = $1;
 `
@@ -30,6 +30,7 @@ WHERE id = $1;
 	if err := row.Scan(
 		&user.ID,
 		&user.Email,
+		&user.Role,
 	); err != nil {
 		if errors.Is(err, sql.ErrNoRows) {
 			log.ErrorContext(ctx, "no user found", "error", err)

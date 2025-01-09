@@ -14,7 +14,7 @@ func (m *Auth) Register(ctx context.Context, inp *RegisterInput) (*ModelUser, er
 	stmt := `
 INSERT INTO user_ (email, password_hash, salt)
 VALUES ($1, $2, $3)
-RETURNING id, email, password_hash, salt;
+RETURNING id, email, role, password_hash, salt;
 `
 
 	row := m.db.QueryRowContext(ctx, stmt, inp.User.Email, inp.User.PasswordHash, inp.User.Salt)
@@ -28,6 +28,7 @@ RETURNING id, email, password_hash, salt;
 	if err := row.Scan(
 		&user.ID,
 		&user.Email,
+		&user.Role,
 		&user.PasswordHash,
 		&user.Salt,
 	); err != nil {

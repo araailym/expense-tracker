@@ -1,0 +1,4 @@
+ALTER TABLE user_
+DROP COLUMN role;
+
+DROP TYPE IF EXISTS user_role

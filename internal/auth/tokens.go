@@ -16,6 +16,7 @@ func GenerateTokenPair(user *UserData, secret string) (*Tokens, error) {
 	claims := token.Claims.(jwt.MapClaims)
 	claims["sub"] = user.ID
 	claims["email"] = user.Email
+	claims["role"] = user.Role
 	claims["exp"] = time.Now().Add(time.Minute * 15).Unix()
 	// Generate encoded token and send it as response.
 	// The signing string should be secret (a generated UUID works too)
@@ -55,9 +56,11 @@ func ParseToken(token string, secret string) (*UserData, error) {
 			return nil, fmt.Errorf("invalid token")
 		}
 		email, ok := claims["email"].(string)
+		role, ok := claims["role"].(string)
 		return &UserData{
 			ID:    id,
 			Email: email,
+			Role:  role,
 		}, nil
 	case errors.Is(err, jwt.ErrTokenMalformed):
 		return nil, fmt.Errorf("invalid token")

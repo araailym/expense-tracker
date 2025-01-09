@@ -14,7 +14,7 @@ func (m *Auth) Login(ctx context.Context, email string) (*ModelUser, error) {
 	log := m.logger.With("method", "Login")
 
 	stmt := `
-SELECT id, email, password_hash, salt
+SELECT id, email, role, password_hash, salt
 FROM user_
 WHERE email = $1;
 `
@@ -31,6 +31,7 @@ WHERE email = $1;
 	if err := row.Scan(
 		&user.ID,
 		&user.Email,
+		&user.Role,
 		&user.PasswordHash,
 		&user.Salt,
 	); err != nil {

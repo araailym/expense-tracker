@@ -79,6 +79,7 @@ func (h *Auth) Login(w http.ResponseWriter, r *http.Request) {
 		&auth.UserData{
 			ID:    fmt.Sprint(dbResp.ID),
 			Email: dbResp.Email,
+			Role:  dbResp.Role,
 		},
 		os.Getenv("TOKEN_SECRET"),
 	)

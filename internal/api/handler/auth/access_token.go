@@ -64,6 +64,7 @@ func (h *Auth) AccessToken(w http.ResponseWriter, r *http.Request) {
 			ctx,
 			"row is empty",
 		)
+		//send critical ктото подделывает джвт или удаленный айди с жействующим рефреш токеном
 		http.Error(w, "row is empty", http.StatusInternalServerError)
 		return
 	}
@@ -71,6 +72,7 @@ func (h *Auth) AccessToken(w http.ResponseWriter, r *http.Request) {
 		&auth.UserData{
 			ID:    fmt.Sprint(dbResp.ID),
 			Email: dbResp.Email,
+			Role:  dbResp.Role,
 		},
 		os.Getenv("TOKEN_SECRET"),
 	)
